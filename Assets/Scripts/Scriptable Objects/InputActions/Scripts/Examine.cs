@@ -14,7 +14,7 @@ public class Examine : InputAction {
 		}
 		else if(seperatedInputWords.Length == 1)
 		{
-			controller.LogStringWithReturn (controller.navigation.currentRoom.description);
+			controller.DisplayRoomText();
 		}
 
 

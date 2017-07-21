@@ -9,10 +9,12 @@ public class RoomNavigation : MonoBehaviour {
 
 	private Dictionary<string, Room> exitDictionary = new Dictionary<string, Room> ();
 	private GameController controller;
+	private Map map;
 
 	void Awake()
 	{
 		controller = GetComponent<GameController> ();
+		map = FindObjectOfType<Map> ();
 	}
 
 	public void UnpackExits()
@@ -20,7 +22,14 @@ public class RoomNavigation : MonoBehaviour {
 		foreach (Exit exit in currentRoom.exits) 
 		{
 			exitDictionary.Add (exit.keyString, exit.valueRoom);
-			controller.interactableDescriptions.Add (exit.description);
+			string modifiedDescription = exit.description;
+
+			if(exit.description.Contains(exit.keyString))
+			{
+				modifiedDescription = modifiedDescription.Replace (exit.keyString, string.Format ("<color=orange>{0}</color>", exit.keyString));
+			}
+
+			controller.interactableDescriptions.Add (modifiedDescription);
 		}
 	}
 
@@ -29,12 +38,18 @@ public class RoomNavigation : MonoBehaviour {
 		if (exitDictionary.ContainsKey(directionNoun))
 		{
 			currentRoom = exitDictionary [directionNoun];
+
+			if(map.mapRooms.ContainsKey(currentRoom.name))
+			{
+				map.ChangeCurrentMapRoom (map.mapRooms [currentRoom.name]);
+			}
+
 			controller.LogStringWithReturn ("You go " + directionNoun);
 			controller.DisplayRoomText ();
 		}
 		else
 		{
-			controller.LogStringWithReturn ("There cannot proceed " + directionNoun);
+			controller.LogStringWithReturn ("You cannot proceed " + directionNoun);
 		}
 	}
 

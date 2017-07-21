@@ -13,6 +13,8 @@ public class GameController : MonoBehaviour {
 	public RoomNavigation navigation;
 	[HideInInspector]
 	public InteractableItems interactableItems;
+	[HideInInspector]
+	public Map map;
 
 	[HideInInspector]
 	public List<string> interactableDescriptions = new List<string> ();
@@ -24,6 +26,7 @@ public class GameController : MonoBehaviour {
 	{
 		navigation = GetComponent<RoomNavigation> ();	
 		interactableItems = GetComponent<InteractableItems> ();
+		map = FindObjectOfType<Map> ();
 	}
 	
 	// Update is called once per frame
@@ -31,6 +34,11 @@ public class GameController : MonoBehaviour {
 	{
 		DisplayRoomText ();
 		DisplayLoggedText ();
+
+		if(map.mapRooms.ContainsKey(navigation.currentRoom.name))
+		{
+			map.ChangeCurrentMapRoom (map.mapRooms [navigation.currentRoom.name]);
+		}
 	}
 
 	public void DisplayRoomText()
@@ -41,7 +49,7 @@ public class GameController : MonoBehaviour {
 
 		string joinedInteractionDescriptions = string.Join ("\n", interactableDescriptions.ToArray ());
 
-		string combinedText = navigation.currentRoom.description + "\n" + joinedInteractionDescriptions;
+		string combinedText = navigation.currentRoom.description + "\n\n" + joinedInteractionDescriptions;
 
 		LogStringWithReturn (combinedText);
 
