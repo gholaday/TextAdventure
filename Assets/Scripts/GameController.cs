@@ -2,12 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEditor;
 
 public class GameController : MonoBehaviour {
 
 	public Text displayText;
-	public InputAction[] inputActions;
+	public InputField inputField;
+	public GameObject helpScreen;
 
+	[Header("Colors")]
+	public Color backgroundColor;
+	public Color baseColor;
+	public TextColors.TextColor exitsColor;
+	public TextColors.TextColor itemsColor;
+
+	public InputAction[] inputActions;
 
 	[HideInInspector]
 	public RoomNavigation navigation;
@@ -21,12 +30,15 @@ public class GameController : MonoBehaviour {
 
 	List<string> actionLog = new List<string>();
 
+	bool helpScreenOpen = false;
+
 	// Use this for initialization
 	void Awake () 
 	{
 		navigation = GetComponent<RoomNavigation> ();	
 		interactableItems = GetComponent<InteractableItems> ();
 		map = FindObjectOfType<Map> ();
+		displayText.color = baseColor;
 	}
 	
 	// Update is called once per frame
@@ -41,13 +53,24 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+	void Update()
+	{
+		if(helpScreenOpen)
+		{
+			if(Input.GetKeyDown(KeyCode.Escape))
+			{
+				CloseHelpScreen ();
+			}
+		}
+	}
+
 	public void DisplayRoomText()
 	{
 		displayText.text = "";
 		ClearCollectionsForNewRoom ();
 		UnpackRoom ();
 
-		string joinedInteractionDescriptions = string.Join ("\n", interactableDescriptions.ToArray ());
+		string joinedInteractionDescriptions = string.Join("\n", interactableDescriptions.ToArray ());
 
 		string combinedText = navigation.currentRoom.description + "\n\n" + joinedInteractionDescriptions;
 
@@ -80,7 +103,7 @@ public class GameController : MonoBehaviour {
 			string description = interactableItems.GetObjects (obj);
 			if(description != null)
 			{
-				interactableDescriptions.Add (description);
+				interactableDescriptions.Add (string.Format("{0}{1}</color>", TextColors.GetTag(itemsColor), description));
 			}
 
 			foreach(Interaction interaction in obj.interactions)
@@ -113,6 +136,31 @@ public class GameController : MonoBehaviour {
 		interactableItems.ClearCollections ();
 		interactableDescriptions.Clear ();
 		navigation.ClearExits ();
+	}
+
+	public void DisableInput()
+	{
+		inputField.enabled = false;
+	}
+
+	public void EnableInput()
+	{
+		inputField.enabled = true;
+		inputField.ActivateInputField ();
+	}
+
+	public void OpenHelpScreen()
+	{
+		helpScreenOpen = true;
+		DisableInput ();
+		helpScreen.SetActive (true);
+	}
+
+	public void CloseHelpScreen()
+	{
+		helpScreenOpen = false;
+		EnableInput ();
+		helpScreen.SetActive (false);
 	}
 
 }

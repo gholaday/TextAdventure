@@ -8,8 +8,10 @@ public class Room : ScriptableObject {
 	[TextArea]
 	public string description;
 	public string roomName;
+	public int pointValue = 0;
 	public Exit[] exits;
 	public InteractableObject[] interactableObjectsInRoom;
+
 
 
 }

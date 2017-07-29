@@ -18,36 +18,31 @@ public class TextInput : MonoBehaviour {
 	{
 		if (userInput.Length > 0) 
 		{
+			// print user command to screen
 			bool acceptable = false;
 
 			controller.LogStringWithReturn (userInput);
-
+			// convert input to lowercase, then loop through input actions, then loop through input actions keywords
 			userInput = userInput.ToLower ();
 
-			char[] delimeterCharacters = { ' ' };
-			string[] seperated = userInput.Split (delimeterCharacters);
-
-			if(seperated.Length > 1 || seperated[0] == "examine")
+			foreach(InputAction action in controller.inputActions)
 			{
-				foreach(InputAction action in controller.inputActions)
+				foreach(string verb in action.verbs)
 				{
-					if(action.keyword == seperated[0])
+					if(userInput.Contains(verb))
 					{
 						acceptable = true;
-						action.RespondToInput (controller, seperated);
+						string inputNouns = userInput.Replace(verb, "").Trim();
+						action.RespondToInput(controller, verb, inputNouns);
 					}
-				}
 
-				if(acceptable == false)
-				{
-					controller.LogStringWithReturn ("You cannot do that. Type 'help'.");
 				}
 			}
-			else
+
+			if(acceptable == false)
 			{
-				controller.LogStringWithReturn ("You cannot do that. Type 'help'.");
-			}
-				
+				controller.LogStringWithReturn("You cannot do that. Type 'help'.");
+			}				
 		}
 
 		InputComplete ();

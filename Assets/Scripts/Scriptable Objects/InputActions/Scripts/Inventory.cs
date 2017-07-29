@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Text Adventure/InputActions/Inventory")]
 public class Inventory : InputAction {
 
-	public override void RespondToInput (GameController controller, string[] seperatedInputWords)
+	public override void RespondToInput (GameController controller, string inputVerbs, string inputNouns)
 	{
 		controller.interactableItems.DisplayInventory ();
 	}

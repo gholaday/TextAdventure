@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class InputAction : ScriptableObject {
 
 	public string keyword;
+	public string[] verbs;
 
-	public abstract void RespondToInput (GameController controller, string[] seperatedInputWords);
+	public abstract void RespondToInput (GameController controller, string inputVerbs, string inputNouns);
 }

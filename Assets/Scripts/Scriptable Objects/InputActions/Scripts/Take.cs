@@ -5,13 +5,13 @@ using UnityEngine;
 [CreateAssetMenu(menuName="Text Adventure/InputActions/Take")]
 public class Take : InputAction {
 
-	public override void RespondToInput (GameController controller, string[] seperatedInputWords)
+	public override void RespondToInput (GameController controller, string inputVerbs, string inputNouns)
 	{
-		Dictionary<string, string> takeDictionary = controller.interactableItems.Take (seperatedInputWords);
+		Dictionary<string, string> takeDictionary = controller.interactableItems.Take (inputNouns);
 
 		if(takeDictionary != null)
 		{
-			controller.LogStringWithReturn (controller.TestVerbDictionaryWithNoun (takeDictionary, seperatedInputWords [0], seperatedInputWords [1]));
+			controller.LogStringWithReturn (controller.TestVerbDictionaryWithNoun (takeDictionary, inputVerbs, inputNouns));
 		}
 	}
 }

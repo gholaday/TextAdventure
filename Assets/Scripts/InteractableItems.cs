@@ -15,10 +15,12 @@ public class InteractableItems : MonoBehaviour {
 	Dictionary<string, ActionResponse> useDictionary = new Dictionary<string, ActionResponse> ();
 	List<string> nounsInInventory = new List<string> ();
 	GameController controller;
+	PointManager pointManager;
 
 	void Awake()
 	{
 		controller = GetComponent<GameController> ();
+		pointManager = GetComponent<PointManager> ();
 	}
 
 	public string GetObjects(InteractableObject interactable)
@@ -84,47 +86,58 @@ public class InteractableItems : MonoBehaviour {
 		nounsInRoom.Clear ();
 	}
 
-	public Dictionary<string, string> Take(string[] seperatedInputWords)
+	public Dictionary<string, string> Take(string inputNouns)
 	{
-		string noun = seperatedInputWords [1];
-
-		if(nounsInRoom.Contains(noun))
+		if(nounsInRoom.Contains(inputNouns))
 		{
-			nounsInInventory.Add (noun);
+			nounsInInventory.Add (inputNouns);
 			AddActionResponses ();
-			nounsInRoom.Remove (noun);
+			nounsInRoom.Remove (inputNouns);
+
+			InteractableObject item = usableItemList.Find (i => i.noun == inputNouns);
+			if(item != null)
+			{
+				pointManager.AddPoints (item.takePointValue);
+			}
+				
 			return takeDictionary;
 		}
 		else
 		{
-			controller.LogStringWithReturn ("There is no " + noun + " here to take.");
+			controller.LogStringWithReturn ("There is no " + inputNouns + " here to take.");
 			return null;
 		}
 	}
 
-	public void UseItem(string[] seperatedInputWords)
+	public void UseItem(string inputNouns)
 	{
-		string noun = seperatedInputWords [1];
-
-		if(nounsInInventory.Contains(noun))
+		if(nounsInInventory.Contains(inputNouns))
 		{
-			if(useDictionary.ContainsKey(noun))
+			if(useDictionary.ContainsKey(inputNouns))
 			{
-				bool actionResult = useDictionary [noun].DoActionResponse (controller);
+				bool actionResult = useDictionary [inputNouns].DoActionResponse (controller);
 
 				if (!actionResult) 
 				{
 					controller.LogStringWithReturn ("Hmmm. Nothing happened.");
 				}
+				else
+				{
+					InteractableObject item = usableItemList.Find (i => i.noun == inputNouns);
+					if(item != null)
+					{
+						pointManager.AddPoints (item.usePointValue);
+					}
+				}
 			}
 			else
 			{
-				controller.LogStringWithReturn ("You can't use the " + noun + ".");
+				controller.LogStringWithReturn ("You can't use the " + inputNouns + ".");
 			}
 		}
 		else
 		{
-			controller.LogStringWithReturn("There is no " + noun + " in your inventory to use.");
+			controller.LogStringWithReturn("There is no " + inputNouns + " in your inventory to use.");
 		}
 	}
 }

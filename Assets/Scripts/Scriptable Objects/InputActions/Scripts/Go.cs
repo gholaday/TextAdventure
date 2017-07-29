@@ -5,8 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(menuName="Text Adventure/InputActions/Go")]
 public class Go : InputAction {
 
-	public override void RespondToInput (GameController controller, string[] seperatedInputWords)
+	public override void RespondToInput (GameController controller, string inputVerbs, string inputNouns)
 	{
-		controller.navigation.ChangeRooms (seperatedInputWords [1]);
+		controller.navigation.ChangeRooms (inputNouns);
 	}
 }

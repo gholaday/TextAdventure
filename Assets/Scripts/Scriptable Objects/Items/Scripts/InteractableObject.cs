@@ -9,4 +9,6 @@ public class InteractableObject : ScriptableObject {
 	[TextArea]
 	public string description = "Description in room";
 	public Interaction[] interactions;
+	public int usePointValue = 0;
+	public int takePointValue = 0;
 }

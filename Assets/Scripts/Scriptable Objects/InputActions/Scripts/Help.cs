@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Text Adventure/InputActions/Use")]
-public class Use : InputAction {
+[CreateAssetMenu(menuName="Text Adventure/InputActions/Help")]
+public class Help : InputAction {
 
 	public override void RespondToInput (GameController controller, string inputVerbs, string inputNouns)
 	{
-		controller.interactableItems.UseItem (inputNouns);
+		controller.OpenHelpScreen ();
 	}
 }
