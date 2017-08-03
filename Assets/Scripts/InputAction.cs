@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class InputAction : ScriptableObject {
 
-	public string keyword;
+	public string id;
 	public string[] verbs;
 
 	public abstract void RespondToInput (GameController controller, string inputVerbs, string inputNouns);

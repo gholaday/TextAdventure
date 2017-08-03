@@ -15,6 +15,7 @@ public class GameController : MonoBehaviour {
 	public Color baseColor;
 	public TextColors.TextColor exitsColor;
 	public TextColors.TextColor itemsColor;
+	public TextColors.TextColor charactersColor;
 
 	public InputAction[] inputActions;
 
@@ -108,12 +109,12 @@ public class GameController : MonoBehaviour {
 
 			foreach(Interaction interaction in obj.interactions)
 			{
-				if(interaction.inputAction.keyword == "examine")
+				if(interaction.inputAction.id == "examine")
 				{
 					interactableItems.examineDictionary.Add (obj.noun, interaction.textResponse);
 				}
 
-				if(interaction.inputAction.keyword == "take")
+				if(interaction.inputAction.id == "take")
 				{
 					interactableItems.takeDictionary.Add (obj.noun, interaction.textResponse);
 				}
@@ -130,7 +131,7 @@ public class GameController : MonoBehaviour {
 
 		return "You can't " + verb + " " + noun + "!";
  	}
-
+		
 	void ClearCollectionsForNewRoom()
 	{
 		interactableItems.ClearCollections ();
@@ -162,5 +163,7 @@ public class GameController : MonoBehaviour {
 		EnableInput ();
 		helpScreen.SetActive (false);
 	}
+
+
 
 }

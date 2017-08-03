@@ -5,13 +5,12 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Text Adventure/Room")]
 public class Room : ScriptableObject {
 
+	public string id;
+	public string roomName;
 	[TextArea]
 	public string description;
-	public string roomName;
 	public int pointValue = 0;
 	public Exit[] exits;
 	public InteractableObject[] interactableObjectsInRoom;
-
-
 
 }
