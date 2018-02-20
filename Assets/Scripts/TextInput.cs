@@ -21,7 +21,7 @@ public class TextInput : MonoBehaviour {
 			// print user command to screen
 			bool acceptable = false;
 
-			controller.LogStringWithReturn (userInput);
+			controller.LogStringWithReturn (">" + userInput);
 			// convert input to lowercase, then loop through input actions, then loop through input actions keywords
 			userInput = userInput.ToLower ();
 

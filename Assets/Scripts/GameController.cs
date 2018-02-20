@@ -8,7 +8,8 @@ public class GameController : MonoBehaviour {
 
 	public Text displayText;
 	public InputField inputField;
-	public GameObject helpScreen;
+	[TextArea]
+	public string helpString;
 
 	[Header("Colors")]
 	public Color backgroundColor;
@@ -30,8 +31,6 @@ public class GameController : MonoBehaviour {
 	public List<string> interactableDescriptions = new List<string> ();
 
 	List<string> actionLog = new List<string>();
-
-	bool helpScreenOpen = false;
 
 	// Use this for initialization
 	void Awake () 
@@ -56,13 +55,7 @@ public class GameController : MonoBehaviour {
 
 	void Update()
 	{
-		if(helpScreenOpen)
-		{
-			if(Input.GetKeyDown(KeyCode.Escape))
-			{
-				CloseHelpScreen ();
-			}
-		}
+		
 	}
 
 	public void DisplayRoomText()
@@ -83,7 +76,11 @@ public class GameController : MonoBehaviour {
 	{
 		actionLog.Add (s + "\n");
 	}
-
+	public void LogString (string s)
+	{
+		actionLog.Add (s);
+	}
+		
 	public void DisplayLoggedText()
 	{
 		string logAsText = string.Join ("\n", actionLog.ToArray ());
@@ -150,20 +147,9 @@ public class GameController : MonoBehaviour {
 		inputField.ActivateInputField ();
 	}
 
-	public void OpenHelpScreen()
+	public void PrintHelpText()
 	{
-		helpScreenOpen = true;
-		DisableInput ();
-		helpScreen.SetActive (true);
+		LogStringWithReturn (helpString);
 	}
-
-	public void CloseHelpScreen()
-	{
-		helpScreenOpen = false;
-		EnableInput ();
-		helpScreen.SetActive (false);
-	}
-
-
 
 }

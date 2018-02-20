@@ -7,6 +7,6 @@ public class Help : InputAction {
 
 	public override void RespondToInput (GameController controller, string inputVerbs, string inputNouns)
 	{
-		controller.OpenHelpScreen ();
+		controller.PrintHelpText ();
 	}
 }

@@ -9,5 +9,5 @@ public class Exit {
 	[TextArea]
 	public string description;
 	public Room valueRoom;
-
+	public string transitionDescription;
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Text Adventure/Room")]
 public class Room : ScriptableObject {
 
+    [UniqueIdentifier]
 	public string id;
 	public string roomName;
 	[TextArea]

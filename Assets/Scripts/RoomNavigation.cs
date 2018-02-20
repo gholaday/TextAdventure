@@ -40,6 +40,8 @@ public class RoomNavigation : MonoBehaviour {
 	{
 		if (exitDictionary.ContainsKey(directionNoun))
 		{
+			Exit exit = GetExitFromDirection (currentRoom, directionNoun);
+
 			currentRoom = exitDictionary [directionNoun];
 
 			if(!discoveredRooms.Contains(currentRoom))
@@ -52,8 +54,12 @@ public class RoomNavigation : MonoBehaviour {
 			{
 				map.ChangeCurrentMapRoom (map.mapRooms [currentRoom.name]);
 			}
+				
+			if(exit != null && !string.IsNullOrEmpty(exit.transitionDescription))
+			{
+				controller.LogString (exit.transitionDescription);
+			}
 
-			controller.LogStringWithReturn ("You go " + directionNoun);
 			controller.DisplayRoomText ();
 		}
 		else
@@ -65,5 +71,16 @@ public class RoomNavigation : MonoBehaviour {
 	public void ClearExits()
 	{
 		exitDictionary.Clear ();
+	}
+
+	public Exit GetExitFromDirection(Room room, string direction)
+	{
+		foreach(Exit exit in room.exits)
+		{
+			if (exit.keyString == direction)
+				return exit;
+		}
+
+		return null;
 	}
 }
